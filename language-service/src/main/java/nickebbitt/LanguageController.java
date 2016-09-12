@@ -19,10 +19,17 @@ public class LanguageController {
 
     public LanguageController() {
         languages = new ArrayList<>();
-        languages.add(new Language("Java", "ObjectOriented", 1996));
-        languages.add(new Language("Scala", "ObjectOriented / Functional", 2010));
-        languages.add(new Language("Closure", "Functional", 2005));
-        languages.add(new Language("Oracle", "Database", 1980));
+        languages.add(new Language("Bash", "Scripting", 1989));
+        languages.add(new Language("C", "Imperative", 1972));
+        languages.add(new Language("Closure", "Functional", 2007));
+        languages.add(new Language("COBOL", "Imperative", 1959));
+        languages.add(new Language("Erlang", "Functional", 1986));
+        languages.add(new Language("Groovy", "Object Oriented", 2003));
+        languages.add(new Language("Haskell", "Functional", 1990));
+        languages.add(new Language("Java", "Object Oriented", 1995));
+        languages.add(new Language("Kotlin", "Object Oriented", 2011));
+        languages.add(new Language("Scala", "Object Oriented / Functional", 2004));
+        languages.add(new Language("Ruby", "Object Oriented", 1995));
     }
 
     @RequestMapping(path = "language", method = RequestMethod.GET)
