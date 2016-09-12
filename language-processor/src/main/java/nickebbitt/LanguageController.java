@@ -9,19 +9,17 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.util.Collections;
 
-/**
- * Created by NEbbitt on 11/09/2016.
- */
 @RestController
+@RequestMapping(path = "languageProcessor")
 public class LanguageController {
 
-    static final URI LANGUAGE_SERVICE_URI = URI.create(System.getProperty("language-service.uri", "http://localhost:8080"));
+    private static final URI LANGUAGE_SERVICE_URI = URI.create(System.getProperty("language-service.uri", "http://localhost:8080/languageService"));
 
     private final RestTemplate restTemplate = new RestTemplate();
 
     @RequestMapping(path = "describe", method = RequestMethod.GET)
     public String describeLanguage() {
-        final ResponseEntity<Language> language = restTemplate.getForEntity(LANGUAGE_SERVICE_URI + "/language", Language.class, Collections.emptyMap());
+        final ResponseEntity<Language> language = restTemplate.getForEntity(LANGUAGE_SERVICE_URI + "/random", Language.class, Collections.emptyMap());
 
         if (language.getBody().getYearCreated() < 2000) {
             return "This is old school...";

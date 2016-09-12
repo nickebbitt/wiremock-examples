@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Created by NEbbitt on 11/09/2016.
  */
 @RestController
+@RequestMapping(path = "languageService")
 public class LanguageController {
 
     private final List<Language> languages;
@@ -32,9 +33,9 @@ public class LanguageController {
         languages.add(new Language("Ruby", "Object Oriented", 1995));
     }
 
-    @RequestMapping(path = "language", method = RequestMethod.GET)
+    @RequestMapping(path = "random", method = RequestMethod.GET)
     @ResponseBody
-    public Language getLanguage() {
+    public Language getRandomLanguage() {
         return languages.get(ThreadLocalRandom.current().nextInt(0, languages.size()));
     }
 
