@@ -15,9 +15,6 @@
 ## File-based project format:
 *.iws
 
-# JRebel config
-resource-server/src/main/resources/rebel.xml
-
 # build directory
 target
 
