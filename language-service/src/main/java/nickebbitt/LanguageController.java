@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Created by NEbbitt on 11/09/2016.
- */
 @RestController
 @RequestMapping(path = "languageService")
 public class LanguageController {
