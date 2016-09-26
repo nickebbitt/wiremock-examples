@@ -1,5 +1,6 @@
 package nickebbitt;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,7 +31,7 @@ public class LanguageController {
         languages.add(new Language("Ruby", "Object Oriented", 1995));
     }
 
-    @RequestMapping(path = "random", method = RequestMethod.GET)
+    @RequestMapping(path = "random", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public Language getRandomLanguage() {
         return languages.get(ThreadLocalRandom.current().nextInt(0, languages.size()));
