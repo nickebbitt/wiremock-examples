@@ -1,31 +1,13 @@
 package nickebbitt;
 
-/**
- * Created by NEbbitt on 11/09/2016.
- */
+import lombok.Data;
+
+@Data
 class Language {
 
-    private String name;
-    private String type;
-    private int yearCreated;
+    private final int id;
+    private final String name;
+    private final String type;
+    private final int yearCreated;
 
-    private Language() {}
-
-    Language(String name, String type, int yearCreated) {
-        this.name = name;
-        this.type = type;
-        this.yearCreated = yearCreated;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public int getYearCreated() {
-        return yearCreated;
-    }
 }
