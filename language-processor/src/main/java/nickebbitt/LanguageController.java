@@ -3,7 +3,6 @@ package nickebbitt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +21,16 @@ public class LanguageController {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @RequestMapping(path = "describe/{languageId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "describe/{languageId}", method = RequestMethod.GET)
     public String describe(@PathVariable("languageId") String languageId) {
 
         log.info("languageServiceUri: {}", languageServiceUri);
         log.info("languageId: {}", languageId);
         log.info("restTemplate: {}", restTemplate);
 
-
         final ResponseEntity<Language> language = restTemplate.getForEntity(languageServiceUri + languageId, Language.class);
+
+        log.info("response: {}", language);
 
         if (language.getStatusCode().is4xxClientError()) {
             throw new ClientRequestException();
