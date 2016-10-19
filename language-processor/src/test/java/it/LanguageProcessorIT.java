@@ -29,7 +29,6 @@ public class LanguageProcessorIT {
 
     static final String LANGUAGE_SERVICE_URL
             = "http://localhost:" + LANGUAGE_SERVICE_PORT + "/languages/";
-    private static final String PROCESSOR_DESCRIBE_URL_PATH = "/processor/describe/";
 
 
     @Autowired
@@ -37,7 +36,7 @@ public class LanguageProcessorIT {
 
     @Rule
     public WireMockRule wireMockRule
-            = new WireMockRule(LANGUAGE_SERVICE_PORT); // TODO console notifier
+            = new WireMockRule(LANGUAGE_SERVICE_PORT);
 
     @Test
     public void shouldReturnMessageDescribingKotlin() {
@@ -54,18 +53,65 @@ public class LanguageProcessorIT {
                             "  \"type\": \"Object Oriented\",\n" +
                             "  \"yearCreated\": 2011\n" +
                             "}")
-                    .withFixedDelay(5000)
             )
         );
 
         final ResponseEntity<String> response
-                = restTemplate.getForEntity(PROCESSOR_DESCRIBE_URL_PATH + "9", String.class);
+                = restTemplate.getForEntity("/processor/describe/9", String.class);
 
         assertThat(response.getStatusCode().value())
                 .isEqualTo(HttpStatus.OK.value());
 
         assertThat(response.getBody())
                 .isEqualTo("Kotlin is a Object Oriented language that was created in 2011");
+
+    }
+
+    @Test
+    public void shouldBeResilientToSlowResponseTimes() {
+
+        stubFor(
+                get(urlEqualTo("/languages/9"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(HttpStatus.OK.value())
+                                        .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                        .withBody("{\n" +
+                                                "  \"id\": \"9\",\n" +
+                                                "  \"name\": \"Kotlin\",\n" +
+                                                "  \"type\": \"Object Oriented\",\n" +
+                                                "  \"yearCreated\": 2011\n" +
+                                                "}")
+
+                                .withFixedDelay(5000))
+        );
+
+        final ResponseEntity<String> response
+                = restTemplate.getForEntity("/processor/describe/9", String.class);
+
+        assertThat(response.getStatusCode().value())
+                .isEqualTo(HttpStatus.OK.value());
+
+        assertThat(response.getBody())
+                .isEqualTo("Kotlin is a Object Oriented language that was created in 2011");
+
+    }
+
+    @Test
+    public void shouldBeResilientToProblemsWithExternalService() {
+
+        stubFor(
+                get(urlEqualTo("/languages/9"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(HttpStatus.SERVICE_UNAVAILABLE.value()))
+                        );
+
+        final ResponseEntity<String> response
+                = restTemplate.getForEntity("/processor/describe/9", String.class);
+
+        assertThat(response.getBody())
+                .isEqualTo("Unable to fulfil request, there was a problem with the language service");
 
     }
 
@@ -93,11 +139,9 @@ public class LanguageProcessorIT {
     public void verifyThatRequestMadeToLanguageService() {
 
         final ResponseEntity<String> response
-                = restTemplate.getForEntity(PROCESSOR_DESCRIBE_URL_PATH + "1", String.class);
+                = restTemplate.getForEntity("/processor/describe/1", String.class);
 
-        verify(
-                getRequestedFor(urlEqualTo("/languages/1"))
-        );
+        verify(1, getRequestedFor(urlEqualTo("/languages/1")));
 
     }
 
@@ -121,10 +165,10 @@ public class LanguageProcessorIT {
         );
 
         final ResponseEntity<String> response
-                = restTemplate.getForEntity(PROCESSOR_DESCRIBE_URL_PATH + "12", String.class);
+                = restTemplate.getForEntity("/processor/describe/12", String.class);
 
-        assertThat(response.getStatusCodeValue())
-                .isEqualTo(HttpStatus.I_AM_A_TEAPOT.value());
+        assertThat(response.getStatusCode())
+                .isEqualTo(HttpStatus.I_AM_A_TEAPOT);
 
     }
 
