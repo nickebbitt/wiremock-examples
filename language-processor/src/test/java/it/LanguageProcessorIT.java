@@ -146,7 +146,7 @@ public class LanguageProcessorIT {
     }
 
     @Test
-    public void confirmThatDonaldTrumpIsATeapot() {
+    public void confirmThatDonaldTrumpIsBad() {
 
         stubFor(
             get(urlEqualTo("/languages/12"))
@@ -168,7 +168,7 @@ public class LanguageProcessorIT {
                 = restTemplate.getForEntity("/processor/describe/12", String.class);
 
         assertThat(response.getStatusCode())
-                .isEqualTo(HttpStatus.I_AM_A_TEAPOT);
+                .isEqualTo(HttpStatus.BAD_REQUEST);
 
     }
 
