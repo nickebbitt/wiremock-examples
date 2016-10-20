@@ -101,11 +101,11 @@ public class LanguageProcessorIT {
     public void shouldBeResilientToProblemsWithExternalService() {
 
         stubFor(
-                get(urlEqualTo("/languages/9"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(HttpStatus.SERVICE_UNAVAILABLE.value()))
-                        );
+            get(urlEqualTo("/languages/9"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(HttpStatus.SERVICE_UNAVAILABLE.value()))
+        );
 
         final ResponseEntity<String> response
                 = restTemplate.getForEntity("/processor/describe/9", String.class);
